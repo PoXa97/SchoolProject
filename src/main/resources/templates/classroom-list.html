@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>School Management</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+
+	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		.contact .info-box {
+			color: #444444;
+			text-align: center;
+			box-shadow: 0 0 20px rgba(214, 215, 216, 0.5);
+			padding: 20px 0 30px 0;
+		}
+
+		.contact .info-box i {
+			font-size: 32px;
+			color: #161818;
+			border-radius: 50%;
+			padding: 8px;
+			border: 2px dotted #c5ebec;
+		}
+
+		.contact .info-box h3 {
+			font-size: 20px;
+			color: #777777;
+			font-weight: 700;
+			margin: 10px 0;
+		}
+
+		.contact .info-box p {
+			padding: 0;
+			line-height: 24px;
+			font-size: 14px;
+			margin-bottom: 0;
+		}
+		.contact  .sent-message {
+			display: none;
+			color: #fff;
+			background: #18d26e;
+			text-align: center;
+			padding: 15px;
+			font-weight: 600;
+		}
+
+		.contact .email-form {
+			box-shadow: 0 0 20px rgba(214, 215, 216, 0.5);
+			padding: 30px;
+		}
+
+		.contact .email-form .error-message {
+			display: none;
+			color: #fff;
+			background: #ed3c0d;
+			text-align: left;
+			padding: 15px;
+			font-weight: 600;
+		}
+
+		.contact .email-form .error-message br+br {
+			margin-top: 25px;
+		}
+
+
+
+		.contact .email-form .loading {
+			display: none;
+			background: #fff;
+			text-align: center;
+			padding: 15px;
+		}
+
+		.contact .email-form .loading:before {
+			content: "";
+			display: inline-block;
+			border-radius: 50%;
+			width: 24px;
+			height: 24px;
+			margin: 0 10px -6px 0;
+			border: 3px solid #18d26e;
+			border-top-color: #eee;
+			animation: animate-loading 1s linear infinite;
+		}
+
+		.contact .email-form input,
+		.contact .email-form textarea {
+			border-radius: 4px;
+			box-shadow: none;
+			font-size: 14px;
+		}
+
+		.contact .email-form input:focus,
+		.contact .email-form textarea:focus {
+			border-color: #161818;
+		}
+
+		.contact .email-form input {
+			padding: 10px 15px;
+		}
+
+		.contact .email-form textarea {
+			padding: 12px 15px;
+		}
+
+		.contact .email-form button[type=submit] {
+			background: #161818;
+			border: 0;
+			padding: 10px 30px;
+			color: #fff;
+			transition: 0.4s;
+			border-radius: 4px;
+		}
+
+		.contact .email-form button[type=submit]:hover {
+			background: #161818;
+		}
+		/*--------------------------------------------------------------
+    # Footer
+    --------------------------------------------------------------*/
+		#footer {
+			background: #eeeeee;
+			padding: 0 0 30px 0;
+			color: #555555;
+			font-size: 14px;
+		}
+
+		#footer .footer-top {
+			background: #f6f6f6;
+			padding: 60px 0 30px 0;
+		}
+
+		#footer .footer-top .footer-info {
+			margin-bottom: 30px;
+		}
+
+		#footer .footer-top .footer-info h3 {
+			font-size: 24px;
+			margin: 0 0 20px 0;
+			padding: 2px 0 2px 0;
+			line-height: 1;
+			font-weight: 700;
+		}
+
+		#footer .footer-top .footer-info p {
+			font-size: 14px;
+			line-height: 24px;
+			margin-bottom: 0;
+			font-family: "Roboto", sans-serif;
+		}
+
+		#footer .footer-top .social-links a {
+			font-size: 18px;
+			display: inline-block;
+			background: #161818;
+			color: #fff;
+			line-height: 1;
+			padding: 8px 0;
+			margin-right: 4px;
+			border-radius: 4px;
+			text-align: center;
+			width: 36px;
+			height: 36px;
+			transition: 0.3s;
+		}
+
+		#footer .footer-top .social-links a:hover {
+			background: #161818;
+			text-decoration: none;
+		}
+
+		#footer .footer-top h4 {
+			font-size: 16px;
+			font-weight: 600;
+			position: relative;
+			padding-bottom: 12px;
+		}
+
+		#footer .footer-top .footer-links {
+			margin-bottom: 30px;
+		}
+
+		#footer .footer-top .footer-links ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		#footer .footer-top .footer-links ul i {
+			padding-right: 2px;
+			color: #161818;
+			font-size: 18px;
+			line-height: 1;
+		}
+
+		#footer .footer-top .footer-links ul li {
+			padding: 10px 0;
+			display: flex;
+			align-items: center;
+		}
+
+		#footer .footer-top .footer-links ul li:first-child {
+			padding-top: 0;
+		}
+
+		#footer .footer-top .footer-links ul a {
+			color: #555555;
+			transition: 0.3s;
+			display: inline-block;
+			line-height: 1;
+		}
+
+		#footer .footer-top .footer-links ul a:hover {
+			color: #161818;
+		}
+
+		#footer .footer-top .footer-newsletter form {
+			margin-top: 30px;
+			background: #fff;
+			padding: 6px 10px;
+			position: relative;
+			border: 1px solid #d5d5d5;
+			border-radius: 4px;
+		}
+
+		#footer .footer-top .footer-newsletter form input[type=email] {
+			border: 0;
+			padding: 4px;
+			width: calc(100% - 110px);
+		}
+
+		#footer .footer-top .footer-newsletter form input[type=submit] {
+			position: absolute;
+			top: -1px;
+			right: -1px;
+			bottom: -1px;
+			border: 0;
+			background: none;
+			font-size: 16px;
+			padding: 0 20px;
+			background: #161818;
+			color: #fff;
+			transition: 0.3s;
+			border-radius: 0 4px 4px 0;
+		}
+
+		#footer .footer-top .footer-newsletter form input[type=submit]:hover {
+			background: #161818;
+		}
+
+		#footer .copyright {
+			text-align: center;
+			padding-top: 30px;
+		}
+
+		#footer .credits {
+			padding-top: 10px;
+			text-align: center;
+			font-size: 13px;
+		}
+
+	</style>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark  fixed-top" style="background-color: #161818;">
+	<div class="container">
+		<a class="navbar-brand"  th:href="@{/api/v1/classrooms}">School Management</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ms-auto">
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/api/v1/classroom}">Classroom</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/api/v1/students}">Students</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/api/v1/teachers}">Teachers</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+<section style="margin-top: 3cm">
+	<div th:switch="${classrooms}" style="margin-top: 3cm; width: 100%" class="row my-5">
+		<h3 class="mb-3" style="padding-left: 80%">
+			<button type="button" class="btn" style="color: #ffffff; background-color: #161818;" data-bs-toggle="modal" data-bs-target="#addClassroomModal">
+				Add Classroom
+			</button>
+		</h3>
+
+		<!-- Modal Ajouter Moto -->
+		<div class="modal fade" id="addClassroomModal" tabindex="-1" aria-labelledby="addClassroomModalLabel" aria-hidden="true">
+			<div class="modal-dialog co">
+				<div class="modal-content">
+					<div class="modal-header contact">
+						<h5 class="modal-title" id="addClassroomModalLabel" style="margin-left: 25%; color: #161818">Add Classroom</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form th:action="@{/api/v1/classrooms}" th:object="${classroom}" class="email-form" method="post">
+							<div class="row">
+								<div class="form-group col-md-10">
+									<label for="name" class="col-form-label" style="font-weight: bold;">Name</label>
+									<input type="text" th:field="${classroom.name}" required class="form-control" id="name" placeholder="Class Name" />
+									<span th:if="${#fields.hasErrors('name')}" th:errors="${classroom.name}" class="text-danger"></span>
+								</div>
+								<div class="form-group col-md-10">
+									<label for="description" class="col-form-label" style="font-weight: bold;">Description</label>
+									<input type="text" th:field="${classroom.description}" required class="form-control" id="description" placeholder="Description" />
+									<span th:if="${#fields.hasErrors('description')}" th:errors="${classroom.description}" class="text-danger"></span>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+								<button type="submit" class="btn" style="color: #ffffff; background-color: #161818;">Submit</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<table class="table bg-white rounded shadow-sm table-hover" style="margin-left: 10px;">
+			<thead>
+			<tr>
+				<th scope="col" width="50">#</th>
+				<th scope="col">Name</th>
+				<th scope="col">Description</th>
+				<th scope="col">Edit</th>
+				<th scope="col">Delete</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="classroom : ${classrooms}">
+				<td > #</td>
+				<td th:text="${classroom.name}"></td>
+				<td th:text="${classroom.description}"></td>
+				<td><a th:href="@{/api/v1/classrooms/edit/{id}(id=${classroom.id})}" class="btn"><i style="color: #161818;" class="fas fa-edit ml-2"></i> </a></td>
+				<td><a th:href="@{/api/v1/classrooms/delete/{id}(id=${classroom.id})}" class="btn"><i style="color: #161818; " class="fas fa-trash ml-2"></i></a></td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</section>
+
+<footer id="footer">
+	<div class="footer-top">
+		<div class="container">
+			<div class="row">
+
+				<div class="col-lg-4 col-md-6">
+					<div class="footer-info">
+						<h3>School Management</h3>
+						<p>
+							12 Rue de la Liberté, <br> 75001 Paris, France<br><br>
+							<strong>Tel:</strong> +33 1 23 45 67 89<br>
+							<strong>Email:</strong> info@monentreprise.fr<br>
+						</p>
+						<div class="social-links mt-3">
+							<a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+							<a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+							<a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+							<a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+							<a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-3 col-md-6 footer-links">
+
+				</div>
+
+				<div class="col-lg-5 col-md-6 footer-newsletter">
+					<h4>Notre Newsletter</h4>
+					<p>Abonnez-vous à notre newsletter pour recevoir les dernières actualités et opportunités directement dans votre boîte de réception</p>
+					<form action="" method="post">
+						<input type="email" name="email"><input type="submit" value="S'inscrire">
+					</form>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="copyright">
+			<p class="text-center small">&copy; 2024 School Management.</p>
+		</div>
+	</div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -9,4 +9,5 @@ public interface IClassroomService {
     Classroom updateClassroom(Classroom s);
     List<Classroom> findAll();
     Classroom save(Classroom s);
+    void deleteById(Long id);
 }

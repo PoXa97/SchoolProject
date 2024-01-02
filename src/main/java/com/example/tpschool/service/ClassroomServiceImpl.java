@@ -32,4 +32,9 @@ public class ClassroomServiceImpl implements IClassroomService{
     public Classroom save(Classroom s) {
         return classroomRepository.save(s);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        classroomRepository.deleteById(id);
+    }
 }
