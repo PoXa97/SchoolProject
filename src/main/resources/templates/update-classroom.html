@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Mon Véhicule</title>
+	<title>School Management</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
@@ -279,13 +279,13 @@
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav ms-auto">
 				<li class="nav-item">
-					<a class="nav-link" th:href="@{/api/v1/classroom}">Classroom</a>
+					<a class="nav-link" th:href="@{/api/v1/classrooms}">Classroom</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" th:href="@{/api/v1/students}">Students</a>
+					<a class="nav-link" th:href="@{/api/v1/students/all/{year}(year=${T(java.time.Year).now().getValue()})}">Students</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" th:href="@{/api/v1/teachers}">Teachers</a>
+					<a class="nav-link" th:href="@{/api/v1/teachers/all/{year}(year=${T(java.time.Year).now().getValue()})}">Teachers</a>
 				</li>
 			</ul>
 		</div>

@@ -11,7 +11,6 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 @Entity
@@ -27,7 +26,15 @@ public class Student extends User{
 
    private  String fatherPhone;
 
-   private  String MotherPhone;
+   private  String motherPhone;
+
+   public Student(String firstName,String lastName,String fatherName, String motherName, String fatherPhone, String motherPhone) {
+      super(null,firstName,lastName,new Date(),new Date());
+      this.fatherName = fatherName;
+      this.motherName = motherName;
+      this.fatherPhone = fatherPhone;
+      this.motherPhone = motherPhone;
+   }
 
    @OneToMany(
            mappedBy = "student",
@@ -36,29 +43,4 @@ public class Student extends User{
    )
    private List<ClassroomStudent> classrooms = new ArrayList<>();
 
-   public void addClassroom(Classroom classroom, String status, String year) {
-      ClassroomStudent classroomStudent = new ClassroomStudent(
-              new ClassroomUserId(this.getId(), classroom.getId(),year),
-              this,
-              classroom,
-              status );
-      this.classrooms.add(classroomStudent);
-      classroom.getStudents().add(classroomStudent);
-   }
-
-   public void removeClassroom(Classroom classroom,String year) {
-      for (Iterator<ClassroomStudent> iterator = classrooms.iterator();
-           iterator.hasNext(); ) {
-         ClassroomStudent classroomStudent = iterator.next();
-
-         if (classroomStudent.getStudent().equals(this)
-                 && classroomStudent.getClassroom().equals(classroom)
-                 && classroomStudent.getId().getYear().equals(year)) {
-            iterator.remove();
-            classroomStudent.getClassroom().getStudents().remove(classroomStudent);
-            classroomStudent.setClassroom(null);
-            classroomStudent.setStudent(null);
-         }
-      }
-   }
 }

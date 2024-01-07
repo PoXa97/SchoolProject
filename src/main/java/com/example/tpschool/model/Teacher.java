@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -29,31 +29,9 @@ public class Teacher extends User{
     )
     private List<ClassroomTeacher> classrooms = new ArrayList<>();
 
-
-    public void addClassroom(Classroom classroom, String year) {
-        ClassroomTeacher classroomTeacher = new ClassroomTeacher(
-                new ClassroomUserId(this.getId(),
-                        classroom.getId(), year),
-                this,
-                classroom);
-        this.classrooms.add(classroomTeacher);
-        classroom.getTeachers().add(classroomTeacher);
-    }
-
-    public void removeClassroom(Classroom classroom, String year) {
-        for (Iterator<ClassroomTeacher> iterator = classrooms.iterator();
-             iterator.hasNext(); ) {
-            ClassroomTeacher classroomTeacher = iterator.next();
-
-            if (classroomTeacher.getTeacher().equals(this)
-                    && classroomTeacher.getClassroom().equals(classroom)
-                    && classroomTeacher.getId().getYear().equals(year)
-            ) {
-                iterator.remove();
-                classroomTeacher.getClassroom().getTeachers().remove(classroomTeacher);
-                classroomTeacher.setClassroom(null);
-                classroomTeacher.setTeacher(null);
-            }
-        }
+    public Teacher(String firstName, String lastName,String phone, String nationalId) {
+        super(null,firstName,lastName,new Date(),new Date());
+        this.phone = phone;
+        this.nationalId = nationalId;
     }
 }

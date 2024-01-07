@@ -43,7 +43,7 @@ public class ClassroomController {
         return "redirect:/api/v1/classrooms";
     }
     @GetMapping("delete/{id}")
-    public String deleteMoto(@PathVariable("id") Long id) {
+    public String deleteClassroom(@PathVariable("id") Long id) {
         classroomService.deleteById(id);
         return "redirect:/api/v1/classrooms";
     }

@@ -269,30 +269,30 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark  fixed-top" style="background-color: #161818;">
 	<div class="container">
-		<a class="navbar-brand"  th:href="@{/api/v1/classrooms}">School Management</a>
+		<a class="navbar-brand"   th:href="@{/api/v1/teachers/all/{year}(year=${T(java.time.Year).now().getValue()})}">School Management</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav ms-auto">
 				<li class="nav-item">
-					<a class="nav-link" th:href="@{/api/v1/classrooms}">Classroom</a>
+					<a class="nav-link" th:href="@{/api/v1/classrooms}">Classrooms</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link"  th:href="@{/api/v1/students/all/{year}(year=${T(java.time.Year).now().getValue()})}">Students</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link"th:href="@{/api/v1/teachers/all/{year}(year=${T(java.time.Year).now().getValue()})}">Teachers</a>
+					<a class="nav-link" th:href="@{/api/v1/teachers/all/{year}(year=${T(java.time.Year).now().getValue()})}">Teachers</a>
 				</li>
 			</ul>
 		</div>
 	</div>
 </nav>
 <section style="margin-top: 3cm">
-	<div th:switch="${classrooms}" style="margin-top: 3cm; width: 100%" class="row my-5">
+	<div th:switch="${teachers}" style="margin-top: 3cm; width: 100%" class="row my-5">
 		<h3 class="mb-3" style="padding-left: 80%">
 			<button type="button" class="btn" style="color: #ffffff; background-color: #161818;" data-bs-toggle="modal" data-bs-target="#addClassroomModal">
-				Add Classroom
+				Add Teacher
 			</button>
 		</h3>
 
@@ -301,22 +301,46 @@
 			<div class="modal-dialog co">
 				<div class="modal-content">
 					<div class="modal-header contact">
-						<h5 class="modal-title" id="addClassroomModalLabel" style="margin-left: 25%; color: #161818">Add Classroom</h5>
+						<h5 class="modal-title" id="addClassroomModalLabel" style="margin-left: 25%; color: #161818">Add Teacher</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<form th:action="@{/api/v1/classrooms}" th:object="${classroom}" class="email-form" method="post">
+						<form th:action="@{/api/v1/teachers}" th:object="${teacher}" class="email-form" method="post">
 							<div class="row">
-								<div class="form-group col-md-10">
-									<label for="name" class="col-form-label" style="font-weight: bold;">Name</label>
-									<input type="text" th:field="${classroom.name}" required class="form-control" id="name" placeholder="Class Name" />
-									<span th:if="${#fields.hasErrors('name')}" th:errors="${classroom.name}" class="text-danger"></span>
+								<div class="form-group col-md-5">
+									<label for="firstName" class="col-form-label" style="font-weight: bold;">FirstName</label>
+									<input type="text" th:field="${teacher.firstName}" required class="form-control" id="firstName" placeholder="FirstName" />
+									<span th:if="${#fields.hasErrors('firstName')}" th:errors="${teacher.firstName}" class="text-danger"></span>
+								</div>
+								<div class="form-group col-md-5">
+									<label for="lastName" class="col-form-label" style="font-weight: bold;">LastName</label>
+									<input type="text" th:field="${teacher.lastName}" required class="form-control" id="lastName" placeholder="LastName" />
+									<span th:if="${#fields.hasErrors('lastName')}" th:errors="${teacher.lastName}" class="text-danger"></span>
+								</div>
+
+								<div class="form-group col-md-5">
+									<label for="phone" class="col-form-label" style="font-weight: bold;">Phone</label>
+									<input type="text" th:field="${teacher.phone}" required class="form-control" id="phone" placeholder="Phone" />
+									<span th:if="${#fields.hasErrors('phone')}" th:errors="${teacher.phone}" class="text-danger"></span>
+								</div>
+								<div class="form-group col-md-5">
+									<label for="nationalId" class="col-form-label" style="font-weight: bold;">National Id</label>
+									<input type="text" th:field="${teacher.nationalId}" required class="form-control" id="nationalId" placeholder="National Id" />
+									<span th:if="${#fields.hasErrors('nationalId')}" th:errors="${student.nationalId}" class="text-danger"></span>
 								</div>
 								<div class="form-group col-md-10">
-									<label for="description" class="col-form-label" style="font-weight: bold;">Description</label>
-									<input type="text" th:field="${classroom.description}" required class="form-control" id="description" placeholder="Description" />
-									<span th:if="${#fields.hasErrors('description')}" th:errors="${classroom.description}" class="text-danger"></span>
+									<label for="classroom" class="col-form-label" style="font-weight: bold;">Classroom</label>
+									<select th:field="${teacher.selectClassroomId}" required class="form-control" id="classroom">
+										<option th:each="classroom : ${classrooms}" th:value="${classroom.id}" th:text="${classroom.name}"></option>
+									</select>
 								</div>
+								<div class="form-group col-md-5">
+									<label for="year" class="col-form-label" style="font-weight: bold;">Year</label>
+									<select th:field="${teacher.year}" required class="form-control" id="year" >
+										<option th:each="year : ${#numbers.sequence(1900, 2050)}" th:value="${year}" th:text="${year}"></option>
+									</select>
+								</div>
+
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -332,19 +356,21 @@
 			<thead>
 			<tr>
 				<th scope="col" width="50">#</th>
-				<th scope="col">Name</th>
-				<th scope="col">Description</th>
-				<th scope="col">Edit</th>
-				<th scope="col">Delete</th>
+				<th scope="col">FirstName</th>
+				<th scope="col">LastName</th>
+				<th scope="col">Phone</th>
+				<th scope="col">National Id</th>
 			</tr>
 			</thead>
 			<tbody>
-			<tr th:each="classroom : ${classrooms}">
+			<tr th:each="teacher : ${teachers}">
 				<td > #</td>
-				<td th:text="${classroom.name}"></td>
-				<td th:text="${classroom.description}"></td>
-				<td><a th:href="@{/api/v1/classrooms/edit/{id}(id=${classroom.id})}" class="btn"><i style="color: #161818;" class="fas fa-edit ml-2"></i> </a></td>
-				<td><a th:href="@{/api/v1/classrooms/delete/{id}(id=${classroom.id})}" class="btn"><i style="color: #161818; " class="fas fa-trash ml-2"></i></a></td>
+				<td th:text="${teacher.firstName}"></td>
+				<td th:text="${teacher.lastName}"></td>
+				<td th:text="${teacher.phone}"></td>
+				<td th:text="${teacher.nationalId}"></td>
+				<td><a th:href="@{/api/v1/teachers/edit/{id}(id=${teacher.id})}" class="btn"><i style="color: #161818;" class="fas fa-edit ml-2"></i> </a></td>
+				<td><a th:href="@{/api/v1/teachers/delete/{id}(id=${teacher.id})}" class="btn"><i style="color: #161818; " class="fas fa-trash ml-2"></i></a></td>
 			</tr>
 			</tbody>
 		</table>

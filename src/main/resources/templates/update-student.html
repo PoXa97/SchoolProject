@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 	<meta charset="UTF-8">
 	<title>School Management</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
+	<!-- box icones-->
 	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
+	<!-- Bootstrap CSS -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<style>
 		.contact .info-box {
@@ -265,11 +267,12 @@
 	</style>
 
 </head>
+
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark  fixed-top" style="background-color: #161818;">
 	<div class="container">
-		<a class="navbar-brand"  th:href="@{/api/v1/classrooms}">School Management</a>
+		<a class="navbar-brand"   th:href="@{/api/v1/students/all/{year}(year=${T(java.time.Year).now().getValue()})}">School Management</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -282,73 +285,65 @@
 					<a class="nav-link"  th:href="@{/api/v1/students/all/{year}(year=${T(java.time.Year).now().getValue()})}">Students</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link"th:href="@{/api/v1/teachers/all/{year}(year=${T(java.time.Year).now().getValue()})}">Teachers</a>
+					<a class="nav-link" th:href="@{/api/v1/teachers/all/{year}(year=${T(java.time.Year).now().getValue()})}">Teachers</a>
 				</li>
 			</ul>
 		</div>
 	</div>
 </nav>
 <section style="margin-top: 3cm">
-	<div th:switch="${classrooms}" style="margin-top: 3cm; width: 100%" class="row my-5">
-		<h3 class="mb-3" style="padding-left: 80%">
-			<button type="button" class="btn" style="color: #ffffff; background-color: #161818;" data-bs-toggle="modal" data-bs-target="#addClassroomModal">
-				Add Classroom
-			</button>
-		</h3>
+	<div class="container my-5">
+		<h3 class="mb-4" style="text-align: center; font-weight: bold; color: #161818" >Update Student</h3>
+		<div class="card" style="margin: auto; max-width: 80%">
+			<div class="card-body">
+				<div class="col-md-8" style="margin-left: 30%">
+					<form th:action="@{/api/v1/students/update}" th:object="${student}" method="post">
+						<div class="row">
+							<div class="form-group col-md-8" style="display: none">
+								<input type="text" th:field="*{id}" required class="form-control" id="id" placeholder="Id" />
+							</div>
 
-		<!-- Modal Ajouter Moto -->
-		<div class="modal fade" id="addClassroomModal" tabindex="-1" aria-labelledby="addClassroomModalLabel" aria-hidden="true">
-			<div class="modal-dialog co">
-				<div class="modal-content">
-					<div class="modal-header contact">
-						<h5 class="modal-title" id="addClassroomModalLabel" style="margin-left: 25%; color: #161818">Add Classroom</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<form th:action="@{/api/v1/classrooms}" th:object="${classroom}" class="email-form" method="post">
-							<div class="row">
-								<div class="form-group col-md-10">
-									<label for="name" class="col-form-label" style="font-weight: bold;">Name</label>
-									<input type="text" th:field="${classroom.name}" required class="form-control" id="name" placeholder="Class Name" />
-									<span th:if="${#fields.hasErrors('name')}" th:errors="${classroom.name}" class="text-danger"></span>
-								</div>
-								<div class="form-group col-md-10">
-									<label for="description" class="col-form-label" style="font-weight: bold;">Description</label>
-									<input type="text" th:field="${classroom.description}" required class="form-control" id="description" placeholder="Description" />
-									<span th:if="${#fields.hasErrors('description')}" th:errors="${classroom.description}" class="text-danger"></span>
-								</div>
+							<div class="form-group col-md-5">
+								<label for="firstName" class="col-form-label" style="font-weight: bold;">FirstName</label>
+								<input type="text" th:field="*{firstName}" required class="form-control" id="firstName" placeholder="FirstName" />
+								<span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></span>
 							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-								<button type="submit" class="btn" style="color: #ffffff; background-color: #161818;">Submit</button>
+							<div class="form-group col-md-5">
+								<label for="lastName" class="col-form-label" style="font-weight: bold;">LastName</label>
+								<input type="text" th:field="*{lastName}" required class="form-control" id="lastName" placeholder="LastName" />
+								<span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></span>
 							</div>
-						</form>
-					</div>
+							<div class="form-group col-md-5">
+								<label for="fatherName" class="col-form-label" style="font-weight: bold;">FatherName</label>
+								<input type="text" th:field="*{fatherName}" required class="form-control" id="fatherName" placeholder="FatherName" />
+								<span th:if="${#fields.hasErrors('fatherName')}" th:errors="*{fatherName}" class="text-danger"></span>
+							</div>
+							<div class="form-group col-md-5">
+								<label for="motherName" class="col-form-label" style="font-weight: bold;">MotherName</label>
+								<input type="text" th:field="*{motherName}" required class="form-control" id="motherName" placeholder="MotherName" />
+								<span th:if="${#fields.hasErrors('motherName')}" th:errors="*{motherName}" class="text-danger"></span>
+							</div>
+							<div class="form-group col-md-5">
+								<label for="fatherPhone" class="col-form-label" style="font-weight: bold;">FatherPhone</label>
+								<input type="text" th:field="*{fatherPhone}" required class="form-control" id="fatherPhone" placeholder="FatherPhone" />
+								<span th:if="${#fields.hasErrors('fatherPhone')}" th:errors="*{fatherPhone}" class="text-danger"></span>
+							</div>
+							<div class="form-group col-md-5">
+								<label for="motherPhone" class="col-form-label" style="font-weight: bold;">MotherPhone</label>
+								<input type="text" th:field="*{motherPhone}" required class="form-control" id="motherPhone" placeholder="MotherPhone" />
+								<span th:if="${#fields.hasErrors('motherPhone')}" th:errors="*{motherPhone}" class="text-danger"></span>
+							</div>
+
+							<div class="col-md-8" style="text-align: center; margin-top: 13px; ">
+								<button type="submit"  style="color:#ffffff; background-color: #161818; border: none" class="btn btn-primary">Update Student</button>
+							</div>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
-
-		<table class="table bg-white rounded shadow-sm table-hover" style="margin-left: 10px;">
-			<thead>
-			<tr>
-				<th scope="col" width="50">#</th>
-				<th scope="col">Name</th>
-				<th scope="col">Description</th>
-				<th scope="col">Edit</th>
-				<th scope="col">Delete</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr th:each="classroom : ${classrooms}">
-				<td > #</td>
-				<td th:text="${classroom.name}"></td>
-				<td th:text="${classroom.description}"></td>
-				<td><a th:href="@{/api/v1/classrooms/edit/{id}(id=${classroom.id})}" class="btn"><i style="color: #161818;" class="fas fa-edit ml-2"></i> </a></td>
-				<td><a th:href="@{/api/v1/classrooms/delete/{id}(id=${classroom.id})}" class="btn"><i style="color: #161818; " class="fas fa-trash ml-2"></i></a></td>
-			</tr>
-			</tbody>
-		</table>
 	</div>
+
 </section>
 
 <footer id="footer">
@@ -361,7 +356,7 @@
 						<h3>School Management</h3>
 						<p>
 							12 Rue de la Liberté, <br> 75001 Paris, France<br><br>
-							<strong>Tel:</strong> +33 1 23 45 67 89<br>
+							<strong>Phone:</strong> +33 1 23 45 67 89<br>
 							<strong>Email:</strong> info@monentreprise.fr<br>
 						</p>
 						<div class="social-links mt-3">
@@ -375,7 +370,6 @@
 				</div>
 
 				<div class="col-lg-3 col-md-6 footer-links">
-
 				</div>
 
 				<div class="col-lg-5 col-md-6 footer-newsletter">
@@ -399,22 +393,7 @@
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+
 </body>
+
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
